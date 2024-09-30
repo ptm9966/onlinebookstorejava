@@ -24,5 +24,4 @@ RUN mv apache-tomcat-9.0.95/* /opt/tomcat
 EXPOSE 8080
 WORKDIR /onlinebookstore/target
 RUN ls -l
-COPY onlinebookstore.war /opt/tomcat/webapps
 CMD ["/opt/tomcat/bin/catalina.sh", "run"]

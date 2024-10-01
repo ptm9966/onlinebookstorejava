@@ -1,4 +1,4 @@
-name: Synopsys Detect Post-Build
+name: Java Build and Synopsys Detect
 
 on:
   push:
@@ -12,10 +12,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # Add your build steps here
-    - name: Build project
-      run: |
-        mvn package
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'  # Adjust this to your project's Java version
+        distribution: 'temurin'  # Uses the Eclipse Temurin distribution
+        cache: 'maven'
+
+    - name: Build with Maven
+      run: mvn clean package
 
     - name: Run Synopsys Detect
       run: |
@@ -24,3 +29,5 @@ jobs:
         # Add any necessary environment variables for Synopsys Detect
         DETECT_PROJECT_NAME: ${{ github.repository }}
         DETECT_PROJECT_VERSION_NAME: ${{ github.sha }}
+        # You might want to add specific Maven-related Detect properties here
+        # DETECT_MAVEN_BUILD_COMMAND: 'mvn clean package'

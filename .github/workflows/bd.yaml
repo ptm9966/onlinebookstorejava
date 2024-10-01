@@ -1,0 +1,27 @@
+name: Synopsys Detect Post-Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-detect:
+    runs-on: ubuntu-latest-arm64
+
+    steps:
+    - uses: actions/checkout@v3
+
+    # Add your build steps here
+    - name: Build project
+      run: |
+        mvn package
+
+    - name: Run Synopsys Detect
+      run: |
+        bash <(curl -s -L https://detect.synopsys.com/detect9.sh)
+      env:
+        # Add any necessary environment variables for Synopsys Detect
+        DETECT_PROJECT_NAME: ${{ github.repository }}
+        DETECT_PROJECT_VERSION_NAME: ${{ github.sha }}

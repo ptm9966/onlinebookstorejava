@@ -45,7 +45,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: docker pull image
         run: docker pull java-web-app-latest
-      - name: Build and push Docker image
-        uses: docker/build-pull-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+      - name: Pull Docker image
+        uses: docker/pull-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
       - name: deploy to container
         run: docker run -it --name hk -p 8080:8080 java-web-app /bin/bash

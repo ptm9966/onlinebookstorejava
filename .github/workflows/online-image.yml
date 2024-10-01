@@ -44,5 +44,5 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: docker pull image
-        run: docker pull hassankhan786/java-web-app-latest-1
+        run: docker pull registry:5000/local/didi-php
       

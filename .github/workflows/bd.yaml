@@ -2,9 +2,8 @@ name: Synopsys Detect Post-Build
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - '*'
 
 jobs:
   build-and-detect:

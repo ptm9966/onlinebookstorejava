@@ -33,3 +33,12 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          
+  deploy:
+    needs: push_to_registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: docker pull image
+        run: docker pull java-web-app
+      - name: deploy to container
+        run: docker run -it --name hk -p 8080:8080 java-web-app /bin/bash

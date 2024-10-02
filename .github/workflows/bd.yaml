@@ -24,7 +24,7 @@ jobs:
 
     - name: Run Synopsys Detect
       run: |
-        bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=${{ variabes.bd_url }} --blackduck.api.token=${{ secrets.bd_token }}
+        bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=${{ vars.bd_url }} --blackduck.api.token=${{ secrets.bd_token }}
       env:
         # Add any necessary environment variables for Synopsys Detect
         DETECT_PROJECT_NAME: ${{ github.repository }}

@@ -45,6 +45,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: docker pull image
         run: docker pull hassankhan786/java-web-app-latest-1:master
+      - name: Set permissions for private key
+        run: |
+         echo "${{ AWS_PRIVATE_KEY }}" > key.pem
+         chmod 600 key.pem
       - name: create docker container
         run: docker run -it --name hassan -p 8080:8080 hassankhan786/java-web-app-latest-1:master /bin/bash
       

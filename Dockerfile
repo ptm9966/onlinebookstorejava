@@ -25,3 +25,4 @@ EXPOSE 8080
 WORKDIR /onlinebookstore/target
 RUN ls -l
 CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+# run to run

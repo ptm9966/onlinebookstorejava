@@ -56,5 +56,5 @@ jobs:
         run: sudo docker rm -f hassankhan786/java-web-app-latest
         
       - name: create docker container
-        run: sudo docker run -i --name hassan -p 8081:8080 hassankhan786/java-web-app-latest-1:master /bin/bash
+        run: sudo docker run -i --name hassan123 -p 8081:8080 hassankhan786/java-web-app-latest-1:master /bin/bash
       

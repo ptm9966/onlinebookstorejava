@@ -68,5 +68,5 @@ jobs:
 
    
       - name: create docker container
-        run: sudo docker run -it --name hassan -p 8080:8080 hassankhan786/java-web-app-latest-1:master
+        run: sudo docker run -it --name hassan -p 8080:8080 hassankhan786/java-web-app-latest-1:master /bin/bash
       

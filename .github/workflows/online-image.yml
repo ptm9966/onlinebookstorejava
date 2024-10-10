@@ -47,6 +47,7 @@ jobs:
         run: docker pull hassankhan786/java-web-app-latest-1:master
         
   Deploy:
+    needs: pull-image-to-dockerhub 
     name: Deploy to EC2
     runs-on: ubuntu-latest
     
@@ -67,5 +68,5 @@ jobs:
 
    
       - name: create docker container
-        run: sudo docker run -it --name hassan -p 8080:8080 hassankhan786/java-web-app-latest-1:master /bin/bash
+        run: sudo docker run -it --name hassan -p 8080:8080 hassankhan786/java-web-app-latest-1:master
       

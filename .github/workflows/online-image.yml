@@ -45,6 +45,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: docker pull image
         run: docker pull hassankhan786/java-web-app-latest-1:master
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME: ${{secrets.SSH_HOST}}
+            USER_NAME: ${{secrets.USER_NAME}}
        
       - name: create docker container
         run: docker run -it --name hassan -p 8080:8080 hassankhan786/java-web-app-latest-1:master /bin/bash

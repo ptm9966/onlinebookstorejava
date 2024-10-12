@@ -23,6 +23,6 @@ RUN tar -xvzf apache-tomcat-9.0.96.tar.gz
 RUN mv apache-tomcat-9.0.96/* /opt/tomcat
 EXPOSE 8080
 WORKDIR /onlinebookstore/target
-COPY -r onlinebookstore /opt/tomcat/webapps
+COPY onlinebookstore /opt/tomcat/webapps
 RUN ls -l
 CMD ["/opt/tomcat/bin/catalina.sh", "run"]

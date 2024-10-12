@@ -34,27 +34,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           
-  pull-image-to-dockerhub:
-    needs: push_to_registry
-    runs-on: ubuntu-latest
-    steps:
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: docker pull image
-        run: docker pull hassankhan786/java-web-app-latest-1:master
-        
-  Deploy:
-    needs: pull-image-to-dockerhub 
-    name: Deploy to EC2
-    runs-on: [aws-ec2]
-    
-    steps:
-      - name: Delete old container
-        run: sudo docker rm -f hassankhan786/java-web-app-latest
-        
-      - name: create docker container
-        run: sudo docker run -i --name hassan123 -p 8081:8080 hassankhan786/java-web-app-latest-1:master /bin/bash
-      
+ 

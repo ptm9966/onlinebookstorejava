@@ -69,7 +69,7 @@ jobs:
       - name: go to root 
         run: cd ../../
 
-      - name: goto tomcat
+      - name: goto tomcat server
         run: cd opt/tomcat
 
       - name: run tomcat server

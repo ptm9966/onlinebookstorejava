@@ -16,12 +16,32 @@ import com.bittercode.service.impl.BookServiceImpl;
 import com.bittercode.util.StoreUtil;
 
 public class RemoveBookServlet extends HttpServlet {
-
+    private static final long serialVersionUID = 1L;
     BookService bookService = new BookServiceImpl();
 
-    public void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        // Show the remove book form for GET requests
         PrintWriter pw = res.getWriter();
-        res.setContentType("text/html");
+        res.setContentType("text/html; charset=UTF-8");
+
+        if (!StoreUtil.isLoggedIn(UserRole.SELLER, req.getSession())) {
+            RequestDispatcher rd = req.getRequestDispatcher("SellerLogin.html");
+            rd.include(req, res);
+            pw.println("<table class=\"tab\"><tr><td>Please Login First to Continue!!</td></tr></table>");
+            return;
+        }
+
+        pw.println("<div class='container'>");
+        showRemoveBookForm(pw);
+        pw.println("</div>");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        PrintWriter pw = res.getWriter();
+        res.setContentType("text/html; charset=UTF-8");
+
         if (!StoreUtil.isLoggedIn(UserRole.SELLER, req.getSession())) {
             RequestDispatcher rd = req.getRequestDispatcher("SellerLogin.html");
             rd.include(req, res);
@@ -35,26 +55,23 @@ public class RemoveBookServlet extends HttpServlet {
             rd.include(req, res);
             StoreUtil.setActiveTab(pw, "removebook");
             pw.println("<div class='container'>");
-            if (bookId == null || bookId.isBlank()) {
-                // render the remove book form;
+
+            if (bookId == null || bookId.trim().isEmpty()) {
+                // Render the remove book form again if no bookId is provided
                 showRemoveBookForm(pw);
                 return;
-            } // else continue
+            }
 
             String responseCode = bookService.deleteBookById(bookId.trim());
             if (ResponseCode.SUCCESS.name().equalsIgnoreCase(responseCode)) {
                 pw.println("<table class=\"tab my-5\"><tr><td>Book Removed Successfully</td></tr></table>");
-                pw.println(
-                        "<table class=\"tab\"><tr><td><a href=\"removebook\">Remove more Books</a></td></tr></table>");
-
             } else {
                 pw.println("<table class=\"tab my-5\"><tr><td>Book Not Available In The Store</td></tr></table>");
-                pw.println(
-                        "<table class=\"tab\"><tr><td><a href=\"removebook\">Remove more Books</a></td></tr></table>");
             }
+            pw.println("<table class=\"tab\"><tr><td><a href=\"removebook\">Remove more Books</a></td></tr></table>");
             pw.println("</div>");
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Optionally log this to a logging framework
             pw.println("<table class=\"tab\"><tr><td>Failed to Remove Books! Try Again</td></tr></table>");
         }
     }
@@ -69,10 +86,8 @@ public class RemoveBookServlet extends HttpServlet {
                 + "                <input class=\"btn btn-danger my-2\" type=\"submit\" value=\"Remove Book\">\r\n"
                 + "            </td>\r\n"
                 + "        </tr>\r\n"
-                + "\r\n"
                 + "        </table>\r\n"
                 + "    </form>";
         pw.println(form);
     }
-
 }

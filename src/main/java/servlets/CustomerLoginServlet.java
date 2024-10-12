@@ -17,40 +17,55 @@ import com.bittercode.service.UserService;
 import com.bittercode.service.impl.UserServiceImpl;
 
 public class CustomerLoginServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     UserService authService = new UserServiceImpl();
 
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        res.setContentType(BookStoreConstants.CONTENT_TYPE_TEXT_HTML + "; charset=UTF-8");
         PrintWriter pw = res.getWriter();
-        res.setContentType(BookStoreConstants.CONTENT_TYPE_TEXT_HTML);
+
         String uName = req.getParameter(UsersDBConstants.COLUMN_USERNAME);
         String pWord = req.getParameter(UsersDBConstants.COLUMN_PASSWORD);
-        User user = authService.login(UserRole.CUSTOMER, uName, pWord, req.getSession());
+        User user = null;
 
         try {
+            user = authService.login(UserRole.CUSTOMER, uName, pWord, req.getSession());
 
             if (user != null) {
-
                 RequestDispatcher rd = req.getRequestDispatcher("CustomerHome.html");
                 rd.include(req, res);
-                pw.println("    <div id=\"topmid\"><h1>Welcome to Online <br>Book Store</h1></div>\r\n"
-                        + "    <br>\r\n"
-                        + "    <table class=\"tab\">\r\n"
-                        + "        <tr>\r\n"
-                        + "            <td><p>Welcome "+user.getFirstName()+", Happy Learning !!</p></td>\r\n"
-                        + "        </tr>\r\n"
-                        + "    </table>");
-
+                pw.println("<div id=\"topmid\"><h1>Welcome to Online <br>Book Store</h1></div>\r\n"
+                        + "<br>\r\n"
+                        + "<table class=\"tab\">\r\n"
+                        + "<tr>\r\n"
+                        + "<td><p>Welcome " + escapeHtml(user.getFirstName()) + ", Happy Learning !!</p></td>\r\n"
+                        + "</tr>\r\n"
+                        + "</table>");
             } else {
-
-                RequestDispatcher rd = req.getRequestDispatcher("CustomerLogin.html");
-                rd.include(req, res);
-                pw.println("<table class=\"tab\"><tr><td>Incorrect UserName or PassWord</td></tr></table>");
+                handleLoginFailure(req, res, pw);
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Log this to a logging framework
+            pw.println("<table class=\"tab\"><tr><td>Something went wrong. Please try again later.</td></tr></table>");
         }
     }
 
+    private void handleLoginFailure(HttpServletRequest req, HttpServletResponse res, PrintWriter pw) throws ServletException, IOException {
+        RequestDispatcher rd = req.getRequestDispatcher("CustomerLogin.html");
+        rd.include(req, res);
+        pw.println("<table class=\"tab\"><tr><td>Incorrect Username or Password</td></tr></table>");
+    }
+
+    private String escapeHtml(String input) {
+        if (input == null) {
+            return "";
+        }
+        return input.replace("&", "&amp;")
+                    .replace("<", "&lt;")
+                    .replace(">", "&gt;")
+                    .replace("\"", "&quot;")
+                    .replace("'", "&#x27;");
+    }
 }

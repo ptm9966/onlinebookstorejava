@@ -76,7 +76,7 @@ jobs:
       - name: goto tomcat server
         run: cd opt/tomcat
 
-      - name: run tomcat server
+      - name: run Tomcat server
         run: ./bin/startup.sh
 
       

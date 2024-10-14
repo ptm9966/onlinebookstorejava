@@ -63,14 +63,12 @@ jobs:
         
       - name: goto inside container
         run: sudo docker attach hassan123 
-      - name: go to warfile
-        run: cd onlinebookstore/target
       
       - name: Copy warfile
         run: cp -r onlinebookstore /opt/tomcat/webapps
 
       - name: go to root 
-        run: cd ../../
+        run: cd ../../../
 
       - name: goto tomcat server
         run: cd opt/tomcat

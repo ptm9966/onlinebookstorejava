@@ -64,14 +64,8 @@ jobs:
       - name: goto inside container
         run: sudo docker attach hassan123 
 
-      - name: give the permission to onlinebookstore directory
-        run: sudo chmod 777 onlinebookstore
-      
-      - name: Copy warfile
-        run: cp -r onlinebookstore . /opt/tomcat/webapps
-
       - name: go to root 
-        run: cd ../../../
+        run: cd ../../
 
       - name: goto tomcat server
         run: cd opt/tomcat

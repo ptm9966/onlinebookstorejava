@@ -58,6 +58,9 @@ jobs:
       - name: create docker container
         run: sudo docker run -i --name hassan123 -p 8081:8080 hassankhan786/java-web-app-latest-1:master /bin/bash
 
+      - name: start the container
+        run: sudo docker start hassan123
+        
       - name: goto inside container
         run: sudo docker attach hassan123 
       - name: go to warfile

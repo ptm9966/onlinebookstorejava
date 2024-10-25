@@ -22,6 +22,7 @@ ADD https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.96/bin/apache-tomcat-9.0.96.ta
 RUN tar -xvzf apache-tomcat-9.0.96.tar.gz
 RUN mv apache-tomcat-9.0.96/* /opt/tomcat
 EXPOSE 8080
+RUN ls -l
 WORKDIR /onlinebookstore/target
 RUN ls -l
 CMD ["/opt/tomcat/bin/catalina.sh", "run"]

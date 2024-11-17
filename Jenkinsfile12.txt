@@ -1,0 +1,54 @@
+pipeline {
+      agent any
+      
+      stages{
+            stage("GIT checkout"){
+            steps{
+                 git 'https://github.com/shubhamprasadnr/onlinebookstore.git'
+              }
+            }
+            stage("build"){
+                  steps{
+                       sh "mvn clean package"
+                       
+                      }
+                       
+            }
+             stage("deploy-dev"){
+                  steps{
+                     
+                       
+                       sshagent(['tomcat3']) {
+                       
+                       sh """
+                            scp -o StrictHostKeyChecking=no  target/onlinebookstore.war ubuntu@13.234.118.254:/home/ubuntu/apache-tomcat-9.0.87/webapps/
+                            
+                            ssh ubuntu@13.234.118.254 /home/ubuntu/apache-tomcat-9.0.87/bin/shutdown.sh
+                            ssh ubuntu@13.234.118.254 /home/ubuntu/apache-tomcat-9.0.87/bin/startup.sh
+                            
+                          """
+    
+                           }
+                      
+                       }
+            }
+             stage("deploy-test"){
+                  steps{
+                     
+                       
+                       sshagent(['tomcat3']) {
+                       
+                       sh """
+                            scp -o StrictHostKeyChecking=no  target/onlinebookstore.war ubuntu@13.233.184.234:/home/ubuntu/apache-tomcat-9.0.87/webapps/
+                            
+                            ssh ubuntu@13.233.184.234 /home/ubuntu/apache-tomcat-9.0.87/bin/shutdown.sh
+                            ssh ubuntu@13.233.184.234 /home/ubuntu/apache-tomcat-9.0.87/bin/startup.sh
+                            
+                          """
+    
+                           }
+                      
+                       }
+                }
+       }
+  }     

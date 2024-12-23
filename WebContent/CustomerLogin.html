@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="ISO-8859-1">
 <title>Book Store</title>
@@ -102,7 +103,7 @@ input {
 		id="theform">
 		<table class="tab" style="width: 40%">
 			<tr style="color: brown; padding-left: 35%">
-				<td>Customer LOGIN</td>
+				<th>Customer LOGIN</th>
 			</tr>
 			<tr>
 				<td><a href="SellerLogin.html"
@@ -158,7 +159,7 @@ input {
 				why += "- Please Enter CAPTCHA Code.\n";
 			}
 			if (theform.CaptchaInput.value != "") {
-				if (ValidCaptcha(theform.CaptchaInput.value) == false) {
+				if (!ValidCaptcha()) {
 					why += "- The CAPTCHA Code Does Not Match.\n";
 				}
 			}
@@ -184,11 +185,7 @@ input {
 		function ValidCaptcha() {
 			var str1 = removeSpaces(document.getElementById('txtCaptcha').value);
 			var str2 = removeSpaces(document.getElementById('CaptchaInput').value);
-			if (str1 == str2) {
-				return true;
-			} else {
-				return false;
-			}
+			return str1 == str2;
 		}
 
 		// Remove the spaces from the entered and generated code
